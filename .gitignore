@@ -1,6 +1,7 @@
 # Cofounder / founder-only docs — keep local, never push
 cofounders/
 INDEX.md
+sync-cofounders.ps1
 
 # OS / editor junk
 .DS_Store

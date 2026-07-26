@@ -19,6 +19,7 @@ flowchart LR
     HUB --> BOM["🔩 Electronics BOM"]:::hard
     HUB --> TEAM["📋 Team Playbooks"]:::del
     HUB --> SPRINT["🗓️ Sprint 01"]:::del
+    HUB --> DEC["🧾 Decisions Log"]:::del
 
     click MASTER "https://claude.ai/code/artifact/b2723f34-f664-4f63-bac4-1b6c7289fb18" _blank
     click ARCH "https://claude.ai/code/artifact/0e63bf97-b09b-4330-be74-6035baecb407" _blank
@@ -29,6 +30,7 @@ flowchart LR
     click BOM "https://claude.ai/code/artifact/089a9128-a6f4-400c-b18a-fe5eb09b801e" _blank
     click TEAM "https://claude.ai/code/artifact/faaaada7-1b93-44f3-8dac-4beb21713f88" _blank
     click SPRINT "https://claude.ai/code/artifact/c8a3365d-2e4f-4f41-97e8-e986ac03e76b" _blank
+    click DEC "https://claude.ai/code/artifact/29cba96c-dc57-4a30-84b4-455235dee990" _blank
 
     classDef hub fill:#1f7a4d,stroke:#155c39,color:#ffffff,font-weight:bold;
     classDef prod fill:#eaf1f6,stroke:#0e6ba8,color:#15202b;
@@ -52,6 +54,7 @@ flowchart LR
 | [Electronics BOM](https://claude.ai/code/artifact/089a9128-a6f4-400c-b18a-fe5eb09b801e) | Per-unit parts list with Nepal sourcing (local vs import), optional vs non-optional | Electronics / procurement |
 | [Team Playbooks](https://claude.ai/code/artifact/faaaada7-1b93-44f3-8dac-4beb21713f88) | The role split, shared seams, integration timeline, RACI matrix | All teams / leads |
 | [Sprint 01](https://claude.ai/code/artifact/c8a3365d-2e4f-4f41-97e8-e986ac03e76b) | The first sprint, day-by-day per team (Sun 26 → Fri 31 Jul) with definition of done | All teams |
+| [Decisions & Components Log](https://claude.ai/code/artifact/29cba96c-dc57-4a30-84b4-455235dee990) 🖨️ | Every parts/component & technical decision — options, rationale, owner, status (locked / under review / open). Printable. | All teams |
 
 ---
 

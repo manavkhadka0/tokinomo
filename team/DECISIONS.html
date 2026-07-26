@@ -1,0 +1,349 @@
+<title>Tokinomo — Decisions & Components Log</title>
+<style>
+  :root{
+    --paper:#ffffff; --panel:#f1f5f8; --ink:#151f2b; --muted:#54606e; --faint:#8b97a4;
+    --line:#d6dde4; --line-strong:#b9c3cc; --accent:#0e6ba8; --accent-deep:#0a4f7d; --energy:#dd7411;
+    --good:#1f7a4d; --good-bg:#e7f3ec; --review:#b26a00; --review-bg:#fbf1e3; --open:#5a6672; --open-bg:#eceef1;
+    --font-head:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    --font-body:Georgia,"Times New Roman",serif;
+    --font-mono:"Cascadia Code",Consolas,ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:54rem;margin:0 auto;padding:3.5rem 2rem 4rem;}
+  h1,h2,h3,h4{font-family:var(--font-head);line-height:1.2;text-wrap:balance;}
+  a{color:var(--accent);}
+
+  /* Cover */
+  .cover{border-top:5px solid var(--accent);padding-top:1.8rem;margin-bottom:2rem;}
+  .eyebrow{font-family:var(--font-head);font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 .5rem;}
+  .cover h1{font-size:2.4rem;letter-spacing:-.01em;margin:.1rem 0 .4rem;}
+  .cover p{color:var(--muted);margin:.2rem 0;max-width:42rem;}
+  .meta{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:.8rem 0;margin-top:1.3rem;font-family:var(--font-head);font-size:.85rem;color:var(--muted);}
+  .meta b{color:var(--ink);}
+
+  /* Legend */
+  .legend{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;background:var(--panel);border-radius:8px;padding:.9rem 1.1rem;margin:1.4rem 0 2rem;font-family:var(--font-head);font-size:.86rem;}
+  .legend .item{display:flex;align-items:center;gap:.45rem;}
+
+  .pill{display:inline-block;font-family:var(--font-head);font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.16rem .5rem;border-radius:20px;white-space:nowrap;}
+  .pill.locked{background:var(--good-bg);color:var(--good);}
+  .pill.review{background:var(--review-bg);color:var(--review);}
+  .pill.open{background:var(--open-bg);color:var(--open);}
+
+  /* Section */
+  section{margin:2.2rem 0;}
+  .sec-head{display:flex;align-items:baseline;gap:.7rem;border-bottom:2px solid var(--ink);padding-bottom:.4rem;margin-bottom:1rem;}
+  .sec-head .ico{font-size:1.2rem;}
+  .sec-head h2{font-size:1.35rem;margin:0;flex:1;}
+  .sec-head .count{font-family:var(--font-head);font-size:.78rem;color:var(--faint);}
+
+  /* Decision card */
+  .card{border:1px solid var(--line-strong);border-radius:9px;padding:1rem 1.1rem;margin:.85rem 0;break-inside:avoid;}
+  .card.rev{border-left:4px solid var(--review);background:#fdf9f3;}
+  .card.opn{border-left:4px solid var(--open);}
+  .card .top{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;}
+  .card .top h3{font-size:1.02rem;margin:0;flex:1;font-family:var(--font-head);}
+  .card dl{display:grid;grid-template-columns:auto 1fr;gap:.25rem .8rem;margin:.4rem 0 0;font-size:.94rem;}
+  .card dt{font-family:var(--font-head);font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);padding-top:.18rem;white-space:nowrap;}
+  .card dd{margin:0;}
+  .card dd.why{color:var(--ink);}
+  .card .disc{margin-top:.5rem;background:var(--review-bg);border-radius:6px;padding:.5rem .7rem;font-size:.9rem;}
+  .card .disc b{font-family:var(--font-head);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--review);display:block;margin-bottom:.15rem;}
+  .card .disc.o{background:var(--open-bg);}
+  .card .disc.o b{color:var(--open);}
+  code{font-family:var(--font-mono);font-size:.86em;background:var(--panel);padding:.05rem .3rem;border-radius:4px;}
+
+  .foot{margin-top:2.5rem;border-top:1px solid var(--line);padding-top:1rem;color:var(--faint);font-size:.82rem;font-family:var(--font-head);}
+
+  @media (max-width:600px){.wrap{padding:2rem 1.1rem;}.card dl{grid-template-columns:1fr;gap:.1rem;}.card dt{padding-top:.4rem;}}
+
+  @media print{
+    @page{margin:15mm;}
+    body{font-size:11pt;line-height:1.45;}
+    .wrap{max-width:none;padding:0;}
+    a{color:var(--accent-deep);}
+    .sec-head,h2,h3{break-after:avoid;}
+    .card,.legend{break-inside:avoid;}
+    .card.rev{background:#fdf9f3 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .pill,.disc{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="cover">
+    <p class="eyebrow">Baliyo Ventures · Tokinomo · Engineering Record</p>
+    <h1>Decisions &amp; Components Log</h1>
+    <p>Every parts, component, and technical decision we've made — with the options weighed, why we chose, who owns it, and its current status. One place to check what's settled and what's still open.</p>
+    <div class="meta">
+      <span><b>Project:</b> Tokinomo shelf robot (Xtreme)</span>
+      <span><b>Updated:</b> 26 Jul 2026</span>
+      <span><b>Scope:</b> technical &amp; component decisions</span>
+    </div>
+  </header>
+
+  <div class="legend">
+    <span class="item"><span class="pill locked">Locked</span> decided, build on it</span>
+    <span class="item"><span class="pill review">Under review</span> being reconsidered</span>
+    <span class="item"><span class="pill open">Open</span> not yet decided</span>
+  </div>
+
+  <!-- ELECTRONICS -->
+  <section>
+    <div class="sec-head"><span class="ico">⚡</span><h2>Electronics &amp; Hardware</h2><span class="count">11 items</span></div>
+
+    <div class="card">
+      <div class="top"><h3>Processor — ESP32-S3 (N16R8)</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Options</dt><dd>ESP32-S3 N16R8 · classic ESP32 (WROOM)</dd>
+        <dt>Why</dt><dd class="why">8 MB PSRAM + 16 MB onboard flash and better audio handling — enough to run Wi-Fi, decode audio, and drive the motor at once. The classic part is too tight. Onboard flash may remove the need for a separate storage chip.</dd>
+        <dt>Owner</dt><dd>Electronics</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Presence sensor — mmWave (HLK-LD2410)</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Options</dt><dd>mmWave radar · PIR · ultrasonic</dd>
+        <dt>Why</dt><dd class="why">Detects a stationary shopper (measures dwell), immune to light/heat/dust. PIR misses a still person; ultrasonic is narrow and misfires. Trade-off accepted: costs more and talks over UART (not one pin).</dd>
+        <dt>Owner</dt><dd>Electronics</dd>
+      </dl>
+    </div>
+
+    <div class="card rev">
+      <div class="top"><h3>Motion — motor for the product gesture</h3><span class="pill review">Under review</span></div>
+      <dl>
+        <dt>Was</dt><dd>Metal-gear micro servo (MG90S / MG996R) — single PWM pin, no driver, built-in position feedback.</dd>
+        <dt>Now</dt><dd class="why">Mechanical lead — who has built a similar mechanism before — proposes a <b>DC gear motor</b> instead.</dd>
+        <dt>Owner</dt><dd>Mechanical + Electronics</dd>
+      </dl>
+      <div class="disc"><b>Discussion / to resolve</b>
+        A DC gear motor needs an <b>H-bridge driver</b> (e.g. DRV8833 / TB6612FNG) — a servo didn't — and has <b>no built-in position feedback</b>, so motion is timed or limit-switch based rather than angle-commanded. Trade-off: more torque and mechanical flexibility vs. an added driver + control complexity. <b>Decision pending</b> — once locked, update the BOM (add driver), the firmware (drop <code>ESP32Servo</code>, add motor-driver control), and the pin map (PWM + 2 direction pins).</div>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Audio amplifier — MAX98357A (I²S)</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Options</dt><dd>MAX98357A I²S DAC+amp · analogue DAC stage</dd>
+        <dt>Why</dt><dd class="why">Clean digital audio straight from the ESP32 with minimal parts — matters when reproduced 100×.</dd>
+        <dt>Owner</dt><dd>Electronics</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Audio storage — onboard 16 MB flash (LittleFS)</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Options</dt><dd>Onboard flash · external SPI flash · SD card</dd>
+        <dt>Why</dt><dd class="why">Onboard 16 MB is enough for the clip(s); no SD-card mechanical/dust risk on a shelf. External SPI flash kept as an <b>optional</b> add-on only if the library grows.</dd>
+        <dt>Owner</dt><dd>Electronics</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Audio format — WAV (PCM, mono, 16 kHz)</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Options</dt><dd>WAV/PCM · MP3 · OGG/Opus</dd>
+        <dt>Why</dt><dd class="why">Zero decode cost on a busy MCU; deterministic, no codec/licensing surprises. Move to MP3 only if flash/bandwidth ever bites. <em>Confirm max length/size.</em></dd>
+        <dt>Owner</dt><dd>Electronics + Backend</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Light — WS2812B addressable LEDs</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Why</dt><dd class="why">Individually controllable colour/animation for an attention effect; can later sync with dwell + audio. Cheap, local, high impact. <b>Optional but recommended</b> for demo impact.</dd>
+        <dt>Owner</dt><dd>Electronics</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Power — 2S 18650 + BMS + AC charging</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Chain</dt><dd><code>AC adapter → CC/CV charger → BMS → 2S 18650 → buck → 5V/3.3V</code></dd>
+        <dt>Why</dt><dd class="why">Battery so the unit isn't tied to a shelf outlet; mains charging lets it ride through a power cut. BMS protects + balances (non-negotiable for Li-ion left unattended).</dd>
+        <dt>Owner</dt><dd>Electronics</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Bulk capacitor on the 5 V rail (≈1000 µF)</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Why</dt><dd class="why">Absorbs motor current spikes so audio/Wi-Fi don't brown out mid-gesture. (Applies to whichever motor we finalise.)</dd>
+        <dt>Owner</dt><dd>Electronics</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Connectivity — Wi-Fi only (no SIM)</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Why</dt><dd class="why">First site (a supermarket) has Wi-Fi; a cellular SIM per unit is too costly at 100 units.</dd>
+        <dt>Owner</dt><dd>Electronics + Lead</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Prototyping — matrix board before PCB</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Plan</dt><dd>4–5 units on matrix board → validate → PCB (first 5 local, remaining 95 later).</dd>
+        <dt>Why</dt><dd class="why">Re-spinning a PCB after ordering 100 is a costly setback. Prove integration first.</dd>
+        <dt>Owner</dt><dd>Electronics</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- MECHANICAL -->
+  <section>
+    <div class="sec-head"><span class="ico">🔧</span><h2>Mechanical</h2><span class="count">3 items</span></div>
+
+    <div class="card">
+      <div class="top"><h3>Enclosure — 3D-print (PETG) → MJF/SLS nylon at scale</h3><span class="pill locked">Locked (proto)</span></div>
+      <dl>
+        <dt>Options</dt><dd>SLS/MJF nylon · vacuum forming · resin/silicone cast · injection moulding</dd>
+        <dt>Why</dt><dd class="why">PETG prints for prototypes (tough, heat-tolerant). For 100 units, MJF/SLS nylon avoids tooling cost; injection moulding not worth it until thousands. <em>Scale method final after validation.</em></dd>
+        <dt>Owner</dt><dd>Mechanical</dd>
+      </dl>
+    </div>
+
+    <div class="card opn">
+      <div class="top"><h3>Gripper / motion type</h3><span class="pill open">Open</span></div>
+      <dl>
+        <dt>Options</dt><dd>Rock/tilt · lift/raise · push/nudge</dd>
+        <dt>Owner</dt><dd>Mechanical (prototype to decide)</dd>
+      </dl>
+      <div class="disc o"><b>To resolve</b> Drives the motor choice/torque with Electronics — decide alongside the motor (see Electronics, under review).</div>
+    </div>
+
+    <div class="card opn">
+      <div class="top"><h3>Shelf-fixing method</h3><span class="pill open">Open</span></div>
+      <dl>
+        <dt>Options</dt><dd>Clamp · adhesive · bracket</dd>
+        <dt>Owner</dt><dd>Mechanical</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- BACKEND -->
+  <section>
+    <div class="sec-head"><span class="ico">🗄️</span><h2>Software — Backend</h2><span class="count">8 items</span></div>
+
+    <div class="card">
+      <div class="top"><h3>Framework — NestJS</h3><span class="pill locked">Locked</span></div>
+      <dl><dt>Why</dt><dd class="why">Team already builds in NestJS; modular, DI, guards for RBAC/tenancy.</dd><dt>Owner</dt><dd>Backend</dd></dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Auth &amp; tenancy — BetterAuth (organization plugin)</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Options</dt><dd>BetterAuth orgs · custom JWT</dd>
+        <dt>Why</dt><dd class="why">Team already runs a BetterAuth multi-tenant pattern; <b>organization = tenant</b>, with members/roles/invites built in. Postgres RLS underneath for defense in depth.</dd>
+        <dt>Owner</dt><dd>Backend</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Database — PostgreSQL + TimescaleDB</h3><span class="pill locked">Locked</span></div>
+      <dl><dt>Why</dt><dd class="why">One engine for relational data + time-series telemetry (hypertables + continuous aggregates).</dd><dt>Owner</dt><dd>Backend</dd></dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Multi-tenancy — shared schema + <code>tenant_id</code> + RLS</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Options</dt><dd>Shared schema + RLS · schema-per-tenant · db-per-tenant</dd>
+        <dt>Why</dt><dd class="why">Cheapest to run, easy cross-tenant admin, and RLS stops a query bug leaking across brands. Others are overkill at this scale.</dd>
+        <dt>Owner</dt><dd>Backend</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Device ↔ cloud — MQTT via EMQX</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Options</dt><dd>MQTT/EMQX · HTTP polling · raw WebSocket · CoAP · cloud IoT</dd>
+        <dt>Why</dt><dd class="why">Built for unreliable device networks: pub/sub, QoS, retained + Last-Will (presence for free), per-device ACL. Self-hosted EMQX avoids vendor lock-in. <em>Team new to MQTT → 1–2 day spike first.</em></dd>
+        <dt>Owner</dt><dd>Backend + Electronics</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Message format — JSON &amp; big payloads over HTTPS</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Why</dt><dd class="why">JSON is debuggable and volume is low (protobuf/CBOR only if bytes ever matter). Audio/firmware go over HTTPS signed URLs, never MQTT.</dd>
+        <dt>Owner</dt><dd>Backend + Electronics</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Device auth — per-device token</h3><span class="pill locked">Locked (v1)</span></div>
+      <dl>
+        <dt>Options</dt><dd>Per-device token · mTLS certs · shared key</dd>
+        <dt>Why</dt><dd class="why">Simple to flash and verify (EMQX auth hook), good enough to isolate devices for launch. mTLS is the later hardening; a shared key is never acceptable.</dd>
+        <dt>Owner</dt><dd>Backend</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Hosting — Coolify + Docker</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Options</dt><dd>Coolify + Docker · raw Compose · k8s · cloud managed</dd>
+        <dt>Why</dt><dd class="why">Self-hosted PaaS: git-push deploys, auto-TLS, one-click Postgres/Redis. Cheap now, containerised so it scales out later.</dd>
+        <dt>Owner</dt><dd>Backend + Lead</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- FRONTEND -->
+  <section>
+    <div class="sec-head"><span class="ico">🖥️</span><h2>Software — Frontend</h2><span class="count">4 items</span></div>
+
+    <div class="card">
+      <div class="top"><h3>Stack — Next.js + TypeScript + Tailwind + shadcn/ui</h3><span class="pill locked">Locked</span></div>
+      <dl><dt>Why</dt><dd class="why">Team's go-to stack; fast to build a polished multi-tenant dashboard.</dd><dt>Owner</dt><dd>Frontend</dd></dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>API contract — REST + OpenAPI</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Options</dt><dd>REST/OpenAPI · GraphQL · tRPC · gRPC</dd>
+        <dt>Why</dt><dd class="why">Language-agnostic, generates typed clients + mocks (Frontend builds before Backend is done), and doubles as the sellable Brand-tier API.</dd>
+        <dt>Owner</dt><dd>Backend + Frontend</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Realtime — WebSocket (Socket.IO)</h3><span class="pill locked">Locked</span></div>
+      <dl><dt>Why</dt><dd class="why">Live device status without refresh; rooms scope events per tenant, auto-reconnect. SSE/polling weaker.</dd><dt>Owner</dt><dd>Frontend + Backend</dd></dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Tenant routing — path-based <code>/app/[slug]</code></h3><span class="pill locked">Locked (v1)</span></div>
+      <dl><dt>Why</dt><dd class="why">No DNS/cert work to start; per-brand subdomains come later (Brand tier).</dd><dt>Owner</dt><dd>Frontend</dd></dl>
+    </div>
+  </section>
+
+  <!-- PRODUCT -->
+  <section>
+    <div class="sec-head"><span class="ico">🎛️</span><h2>Product &amp; System</h2><span class="count">3 items</span></div>
+
+    <div class="card">
+      <div class="top"><h3>v1 interaction — one line + cooldown</h3><span class="pill locked">Locked</span></div>
+      <dl>
+        <dt>Options</dt><dd>One line + cooldown · adaptive-on-dwell now · always performing</dd>
+        <dt>Why</dt><dd class="why">Simplest reliable v1. Dwell is still logged for analytics; adaptive multi-line audio is a later firmware revision.</dd>
+        <dt>Owner</dt><dd>Lead + Electronics</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>Multi-tenant from day one (brand = tenant)</h3><span class="pill locked">Locked</span></div>
+      <dl><dt>Why</dt><dd class="why">Baliyo = platform owner; Xtreme = tenant #1; cosmetics/others = future tenants. Scalable, never hardcoded to one brand.</dd><dt>Owner</dt><dd>Lead + Backend</dd></dl>
+    </div>
+
+    <div class="card">
+      <div class="top"><h3>First Xtreme demo scope — device + basic fleet view</h3><span class="pill locked">Locked</span></div>
+      <dl><dt>Why</dt><dd class="why">A working device plus a simple online/status view is enough for the first demo; the full multi-tenant dashboard follows.</dd><dt>Owner</dt><dd>Lead + Frontend</dd></dl>
+    </div>
+  </section>
+
+  <p class="foot">Living document — update the status pill when a decision changes, and note the discussion. Business, pricing, and deal decisions are recorded separately in the cofounders' Business Model doc. · Tokinomo · Baliyo Ventures.</p>
+
+</div>
