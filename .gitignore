@@ -1,0 +1,10 @@
+# Cofounder / founder-only docs — keep local, never push
+cofounders/
+INDEX.md
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
